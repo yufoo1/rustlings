@@ -1,0 +1,14 @@
+{
+  "tests": [
+    {
+      "name": "test_rustlings",
+      "setup": "cargo install --force --path .",
+      "run": "rustlings verify",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 100
+    }
+  ]
+}
