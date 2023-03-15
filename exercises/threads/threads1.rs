@@ -6,13 +6,17 @@
 // The program should wait until all the spawned threads have finished and
 // should collect their return values into a vector.
 
-// I AM NOT DONE
 
 use std::thread;
-use std::time::{Duration, Instant};
+use std::time::{Duration, Instant, SystemTime};
 
 fn main() {
     let mut handles = vec![];
+    let mut s;
+    match SystemTime::now().duration_since(SystemTime::UNIX_EPOCH) {
+        Ok(n) => s = n.as_millis(),
+        Err(_) => panic!("SystemTime before UNIX EPOCH!"),
+    }
     for i in 0..10 {
         handles.push(thread::spawn(move || {
             let start = Instant::now();
@@ -25,6 +29,13 @@ fn main() {
     let mut results: Vec<u128> = vec![];
     for handle in handles {
         // TODO: a struct is returned from thread::spawn, can you use it?
+        handle.join().unwrap();
+        let mut e;
+        match SystemTime::now().duration_since(SystemTime::UNIX_EPOCH) {
+            Ok(n) => e = n.as_millis(),
+            Err(_) => panic!("SystemTime before UNIX EPOCH!"),
+        }
+        results.push(e - s);
     }
 
     if results.len() != 10 {
